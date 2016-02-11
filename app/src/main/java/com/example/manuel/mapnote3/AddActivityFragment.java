@@ -1,5 +1,6 @@
 package com.example.manuel.mapnote3;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.location.Location;
 import android.location.LocationListener;
@@ -22,6 +23,7 @@ public class AddActivityFragment extends Fragment implements LocationListener {
 
     EditText addTitle, addNote;
     Location loc = null;
+    ProgressDialog progress;
 
     public AddActivityFragment() {
     }
@@ -33,6 +35,11 @@ public class AddActivityFragment extends Fragment implements LocationListener {
 
         addTitle = (EditText) view.findViewById(R.id.addTitle);
         addNote = (EditText) view.findViewById(R.id.addNote);
+
+        //ProgressDialog que se muestra hasta que la aplicacion coge la localizacion
+        progress = new ProgressDialog(getContext());
+        progress.setMessage("Localizando");
+        progress.show();
 
         //Le decimos a Firebase que este sera el contexto
         Firebase.setAndroidContext(getContext());
@@ -76,7 +83,9 @@ public class AddActivityFragment extends Fragment implements LocationListener {
 
     @Override
     public void onLocationChanged(Location location) {
+
         loc = location;
+        progress.hide();
     }
 
     @Override
