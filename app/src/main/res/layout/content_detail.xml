@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="com.example.manuel.mapnote3.DetailActivity"
+    tools:showIn="@layout/activity_detail">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="New Text"
+        android:id="@+id/detailTitle"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentStart="true"
+        style="@style/Base.TextAppearance.AppCompat.Display1"
+        android:gravity="center_vertical|center_horizontal"
+        android:textColor="#000000"
+        android:paddingBottom="20dp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="New Text"
+        android:id="@+id/detailNote"
+        android:layout_below="@+id/detailTitle"
+        android:layout_alignEnd="@+id/detailTitle"
+        android:layout_alignParentStart="true"
+        style="@style/Base.TextAppearance.AppCompat.Body1" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="New Text"
+        android:id="@+id/detailLocation"
+        android:layout_below="@+id/detailNote"
+        android:layout_alignParentStart="true"
+        android:layout_alignEnd="@+id/detailNote"
+        android:gravity="center_vertical"
+        android:textColor="@color/colorPrimaryDark" />
+
+</RelativeLayout>

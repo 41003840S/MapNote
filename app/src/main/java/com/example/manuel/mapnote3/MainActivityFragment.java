@@ -2,7 +2,6 @@ package com.example.manuel.mapnote3;
 
 import android.content.Intent;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -58,7 +57,7 @@ public class MainActivityFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                //Intent intent = new Intent(getContext(), DetailActivity.class);
+                intent = new Intent(getContext(), DetailActivity.class);
                 Firebase ref = adapter.getRef(position);
                 //Toast.makeText(getApplicationContext(), ref.toString(), Toast.LENGTH_LONG).show();
                 intent.putExtra("nota_ref", ref.toString());
@@ -71,7 +70,7 @@ public class MainActivityFragment extends Fragment {
         addNote.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getContext(), AddActivity.class);
+                intent = new Intent(getContext(), AddActivity.class);
                 startActivity(intent);
             }
         });
