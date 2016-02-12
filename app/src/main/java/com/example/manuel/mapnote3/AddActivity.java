@@ -1,5 +1,6 @@
 package com.example.manuel.mapnote3;
 
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -18,6 +19,8 @@ public class AddActivity extends AppCompatActivity {
         toolbar.setTitle("Add note");
         setSupportActionBar(toolbar);
 
+        // Obligamos a que la pantalla esté en portrait
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }

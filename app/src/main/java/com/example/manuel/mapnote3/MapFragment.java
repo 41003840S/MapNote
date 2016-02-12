@@ -59,30 +59,39 @@ public class MapFragment extends Fragment {
 
         noteMarker = new RadiusMarkerClusterer(getContext());
         map.getOverlays().add(noteMarker);
-        Bitmap clusterIcon = ((BitmapDrawable)getResources().getDrawable(R.drawable.ic_clustermarker)).getBitmap();
+
+        //He hecho click derecho segunda opcion para que no pete la app si era null (cuando introducia una nota)
+        Bitmap clusterIcon = ((BitmapDrawable) getResources().getDrawable(R.drawable.ic_clustermarker)) != null ? ((BitmapDrawable) getResources().getDrawable(R.drawable.ic_clustermarker)).getBitmap() : null;
         noteMarker.setIcon(clusterIcon);
         noteMarker.setRadius(100);
 
         //Le decimos a Firebase que este sera el contexto
         Firebase.setAndroidContext(getContext());
 
-        //Creamos una referencia a nuestra bd de Firebase
+        //Creamos una referencia a nuestra bd de Firebase y a su hijo
         final Firebase notes = new Firebase("https://mapnote.firebaseio.com/").child("notes");
 
         notes.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
+                //Recorremos todas las notas que haya en ese momento
                 for (DataSnapshot postSnapshot : snapshot.getChildren()) {
 
+                    //Creamos un objeto nota de ese elemento
                     Note note = postSnapshot.getValue(Note.class);
 
                     Marker marker = new Marker(map);
+
+                    //Crea un GeoPoint a partir de la latitud y longitud de la nota
                     GeoPoint point = new GeoPoint(note.getLatitud(), note.getLongitud());
+                    //Le asignamos al marker esa posicion para que la señale
                     marker.setPosition(point);
+                    //Modificamos sus atributos
                     marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
                     marker.setIcon(getResources().getDrawable(R.drawable.ic_notemarker));
                     marker.setTitle(note.getTitle());
                     marker.setAlpha(0.6f);
+                    //Y que la añada
                     noteMarker.add(marker);
                 }
                 noteMarker.invalidate();
@@ -98,6 +107,7 @@ public class MapFragment extends Fragment {
 
     private void configurateMap(){
 
+        //Configuraciones del mapa
         map.setTileSource(TileSourceFactory.MAPQUESTOSM);
         map.setTilesScaledToDpi(true);
         map.setBuiltInZoomControls(true);
