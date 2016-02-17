@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.firebase.client.Firebase;
 import com.firebase.ui.FirebaseListAdapter;
@@ -44,6 +45,7 @@ public class MainActivityFragment extends Fragment {
             @Override
             protected void populateView(View v, Note model, int position) {
                 super.populateView(v, model, position);
+                Toast.makeText(getContext(), "Cargando notas", Toast.LENGTH_SHORT).show();
 
                 title = (TextView) v.findViewById(R.id.tvTitle);
                 title.setText(model.getTitle());

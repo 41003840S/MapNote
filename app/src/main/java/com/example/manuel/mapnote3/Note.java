@@ -5,15 +5,17 @@ public class Note {
     private String nota;
     private double latitud;
     private double longitud;
+    private String imagePath;
 
     public Note() {
     }
 
-    public Note(String title, String nota, double latitud, double longitud) {
+    public Note(String title, String nota, double latitud, double longitud, String imagePath) {
         this.title = title;
         this.nota = nota;
         this.latitud = latitud;
         this.longitud = longitud;
+        this.imagePath=imagePath;
     }
 
     public String getTitle() {
@@ -46,6 +48,14 @@ public class Note {
 
     public void setLongitud(double longitud) {
         this.longitud = longitud;
+    }
+
+    public String getImagePath() {
+        return imagePath;
+    }
+
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
     }
 }
 

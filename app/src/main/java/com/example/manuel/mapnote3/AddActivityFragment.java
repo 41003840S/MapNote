@@ -3,24 +3,18 @@ package com.example.manuel.mapnote3;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
-import android.graphics.Color;
-import android.graphics.ColorFilter;
-import android.hardware.camera2.params.BlackLevelPattern;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.media.Image;
 import android.provider.MediaStore;
-import android.speech.RecognizerIntent;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.util.Base64;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
@@ -29,6 +23,9 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.firebase.client.Firebase;
+
+import java.io.ByteArrayOutputStream;
+import java.io.File;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -41,6 +38,7 @@ public class AddActivityFragment extends Fragment implements LocationListener {
     ImageButton cameraButton, galleryButton, micButton;
     ImageView checkGallery, checkCamera, checkMic;
     boolean tookPhoto = false;
+    static final int REQUEST_IMAGE_CAPTURE = 1;
 
     public AddActivityFragment() {
     }
@@ -97,7 +95,7 @@ public class AddActivityFragment extends Fragment implements LocationListener {
 
         //ProgressDialog que se muestra hasta que la aplicacion coge la localizacion
         progress = new ProgressDialog(getContext());
-        progress.setMessage("Localizando");
+        progress.setMessage("Locating");
         progress.show();
 
         //Le decimos a Firebase que este sera el contexto
@@ -121,12 +119,25 @@ public class AddActivityFragment extends Fragment implements LocationListener {
                 nota.setNota(addNote.getText().toString());
                 nota.setLatitud(loc.getLatitude());
                 nota.setLongitud(loc.getLongitude());
+                if(tookPhoto)
+                {
+                    nota.setImagePath(imageFile());
 
+                    //Lo ponemos a false otra vez
+                    tookPhoto= false;
+                }
+                //Instruccion para subir a Firebase
                 note.setValue(nota);
 
                 //Vaciamos el editTextNota
                 addTitle.setText("");
                 addNote.setText("");
+
+                //Escondemos los iconos
+                checkGallery.setVisibility(View.INVISIBLE);
+                checkCamera.setVisibility(View.INVISIBLE);
+                checkMic.setVisibility(View.INVISIBLE);
+
 
             }
         });
@@ -166,9 +177,25 @@ public class AddActivityFragment extends Fragment implements LocationListener {
 
     public void openCamera(){
         tookPhoto = true;
-        Intent openCamera = new Intent(MediaStore.INTENT_ACTION_STILL_IMAGE_CAMERA);
-        startActivity(openCamera);
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        // Ensure that there's a camera activity to handle the intent
+        if (takePictureIntent.resolveActivity(getActivity().getPackageManager()) != null) {
+            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+        }
     }
+
+    public String imageFile() {
+
+        //Cogemos el PATH de la ultima foto tomada
+        String[] projection = { MediaStore.Images.Media.DATA };
+        Cursor cursor = getActivity().managedQuery(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, projection, null, null, null);
+        int column_index_data = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+        cursor.moveToLast();
+        String path =  cursor.getString(column_index_data);
+
+        return path;
+    }
+
     public void openMic(){
         final int ACTIVITY_RECORD_SOUND = 1;
         Intent intent = new Intent(MediaStore.Audio.Media.RECORD_SOUND_ACTION);
